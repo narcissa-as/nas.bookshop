@@ -1,6 +1,9 @@
 package nas.bookshop.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.MappedSuperclass;
 
@@ -8,9 +11,15 @@ import javax.persistence.MappedSuperclass;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+
 @MappedSuperclass
 public class Person extends BaseEntity{
     private String firstName;
     private String lastName;
+
+    public Person(Long id, String firstName, String lastName) {
+        super(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

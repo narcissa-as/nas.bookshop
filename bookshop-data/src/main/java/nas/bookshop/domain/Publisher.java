@@ -2,12 +2,11 @@ package nas.bookshop.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +16,9 @@ import java.util.Set;
 @Table(name = "publishers")
 @Entity
 public class Publisher extends BaseEntity{
-    private Person owner;
+    @ManyToOne
+    @JoinColumn(name="publicationowner_id")
+    private PublicationOwner owner;
     private LocalDate publishDate;
     private String address;
     @OneToMany(mappedBy = "publisher")
