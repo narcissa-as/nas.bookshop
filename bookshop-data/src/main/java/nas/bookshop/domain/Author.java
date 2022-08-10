@@ -21,11 +21,19 @@ public class Author extends Person {
         this.books = books;
         this.description = description;
     }
-
+/*
+    public Author(String firstName, String lastName, String description) {
+        super(firstName, lastName);
+        this.description = description;
+    }
+*/
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "author_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<Book> books = new HashSet<>();
 
+    @Lob
     private String description;
+
+
 }

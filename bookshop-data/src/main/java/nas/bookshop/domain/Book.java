@@ -3,9 +3,10 @@ package nas.bookshop.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,29 +21,44 @@ public class Book extends BaseEntity {
     private Set<Author> authors = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn (name="publisher_id")
+    @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
     @ManyToMany
-    @JoinTable (name="book_category",
-    joinColumns=@JoinColumn(name="book_id"),inverseJoinColumns=@JoinColumn(name="category_id"))
+    @JoinTable(name = "book_category",
+            joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name="book_formats",
-    joinColumns = @JoinColumn(name="book_id"),inverseJoinColumns = @JoinColumn(name="format_id"))
-    private Set<Format> formats=new HashSet<>();
+    @JoinTable(name = "book_formats",
+            joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "format_id"))
+    private Set<Format> formats = new HashSet<>();
 
     private String name;
     private Long EANUPC;
-    private String BISAC;
+    //I delete this property because it's categories in my design.
+    //private String BISAC;
 
-    private BigDecimal price;
+    //private BigDecimal price;
+    private String price;
     private Integer pages;
     private String language;
     private Boolean available;
-    //@lobs
+    private LocalDate publishDate;
+
+    @Lob
     private String description;
+    @Lob
     private String review;
+
+    //a helper method foe setting data for both sides(Author,Book) just for remembering the relation is many to many
+    //and Owning side is not here and is Author, But I thought it won't matter to set the data here.
+    public void addAuthor(Author author) {
+
+        Set<Author> authors = new HashSet<>();
+        authors.add(author);
+        this.authors.add(author);
+        author.getBooks().add(this);
+    }
 
 }

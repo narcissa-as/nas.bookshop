@@ -10,6 +10,8 @@ insert into categories(description)values('General');
 insert into categories(description)values('History');
 insert into categories(description)values('Exploration & Discovery');
 insert into categories(description)values('History - Exploration');
-
+insert into categories(description)values('Fantasy - Historical');
+insert into categories(description)values('Romance');
+insert into categories(description)values('Historical');
 
 

@@ -1,14 +1,12 @@
 package nas.bookshop.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -16,6 +14,11 @@ import java.util.Set;
 @Entity
 @Table(name = "publicationOwners")
 public class PublicationOwner extends Person {
+    @Builder
+    public PublicationOwner(String firstName, String lastName) {
+        super(firstName, lastName);
+    }
+/*
     @OneToMany(mappedBy = "owner")
-    private Set<Publisher> publishers=new HashSet<>();
+    private Set<Publisher> publishers=new HashSet<>();*/
 }
