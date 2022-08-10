@@ -58,6 +58,11 @@ public class Book extends BaseEntity {
         Set<Author> authors = new HashSet<>();
         authors.add(author);
         this.authors.add(author);
+        //This is another way for not getting null error while using Builder
+        if (author.getBooks() == null) {
+            author.setBooks(new HashSet<>());
+        }
+
         author.getBooks().add(this);
     }
 

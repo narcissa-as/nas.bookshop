@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +65,15 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
         Category romance = categoryOptional2.get();
 
         Book foul = new Book();
-
+        Author author = Author.builder().firstName("Chloe").lastName("Gong").description("Chloe Gong is the New York Times " +
+                "bestselling author of These Violent Delights and its sequel, Our Violent Ends, as well as Foul Lady" +
+                " Fortune. She is a recent graduate of the University of Pennsylvania, where she double majored in " +
+                "English and international relations. Born in Shanghai and raised in Auckland, New Zealand, Chloe" +
+                " is now located in New York pretending to be a real adult. You can find her on Twitter, Instagram," +
+                " and TikTok under @TheChloeGong or check out her website at TheChloeGong.com.").books(new HashSet<>()).build();
+//adding new Hashset<>() above is for defining an empty Hashset for avoid having a null Book list property and
+// getting null error
+/*
         Author author = new Author();
         author.setFirstName("Chloe");
         author.setLastName("Gong");
@@ -74,7 +83,7 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
                 "English and international relations. Born in Shanghai and raised in Auckland, New Zealand, Chloe" +
                 " is now located in New York pretending to be a real adult. You can find her on Twitter, Instagram," +
                 " and TikTok under @TheChloeGong or check out her website at TheChloeGong.com.");
-
+*/
         Author savedAuthor = authorRepository.save(author);
         foul.addAuthor(author);
 
