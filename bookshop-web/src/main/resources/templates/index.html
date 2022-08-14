@@ -1,11 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>My Books Site</title>
+    <title>Book lists</title>
+    <!--using CSS-->
+    <!-- !CDN Added Part-start -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <!--CDN Added Part-start-->
 </head>
 <body>
-<h1>My Books!</h1>
+<div class="container-fluid" style="margin-top: 20px"> <!--margin from top before starting table-->
+    <div class="row"><!--add a row-->
+        <div class="col-md-6 col-md-offset-3"><!--add a 6 column md with offset 3-->
+            <div class="panel panel-primary"><!--give us the rounded panel-->
+
+                <div class="panel-heading"> <!--our panel has heading-->
+                    <h1 class="panel-title">Welcome to Online BookShop</h1>
+
+                </div>
+                <div class="panel-body"> <!--panel body-->
+                    <div class="table-responsive" th:if="${not #lists.isEmpty(books)}"><!--thymeleaf at the end part-->
+                        <!--says that:If list is not empty show the table so if list is empty it doesn't show the table
+                        at all-->
+                        <table class="table table-hover "><!--mouse effect on rows-->
+                            <thead class="thead-inverse">
+                            <tr><!-- table row-->
+                                <th>NAME</th><!--table headers-->
+                                <th>Description</th>
+                                <th>EAN/UPC</th>
+                                <th>Available</th>
+                            </thead>
+                            </tr>
+                            </thead>
+                            <tr th:each="book : ${books}">
+                                <td th:text="${book.name}">334</td>
+                                <td th:text="${book.description}">Tasty Goodnees 3</td>
+                                <td th:text="${book.EANUPC}">Tasty Goodnees 3</td>
+                                <td th:text="${book.available}">Tasty Goodnees 3</td>
+
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
+
 
