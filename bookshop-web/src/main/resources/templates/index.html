@@ -33,6 +33,7 @@
                         <table class="table table-hover "><!--mouse effect on rows-->
                             <thead class="thead-inverse">
                             <tr><!-- table row-->
+                                <th>View Book</th><!--table headers-->
                                 <th>NAME</th><!--table headers-->
                                 <th>Description</th>
                                 <th>EAN/UPC</th>
@@ -41,6 +42,7 @@
                             </tr>
                             </thead>
                             <tr th:each="book : ${books}">
+                                <td><a href="#" th:href="@{'/book/' +${book.id}+ '/show'}">View</a></td>
                                 <td th:text="${book.name}">334</td>
                                 <td th:text="${book.description}">Tasty Goodnees 3</td>
                                 <td th:text="${book.EANUPC}">Tasty Goodnees 3</td>
@@ -57,5 +59,6 @@
 </div>
 </body>
 </html>
+
 
 
