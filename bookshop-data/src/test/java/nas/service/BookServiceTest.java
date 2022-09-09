@@ -26,9 +26,10 @@ class BookServiceTest {
     BookSDJpaService bookService;
 
     Book returnBook;
+
     @BeforeEach
     void setUp() {
-        returnBook=Book.builder().name("book1").build();
+        returnBook = Book.builder().name("book1").build();
     }
 
     Long aLong = 1L;
@@ -44,24 +45,25 @@ class BookServiceTest {
         Set<Book> serviceSet = bookService.findAll();
 
         assertNotNull(serviceSet);
-        assertEquals(2,serviceSet.size());
+        assertEquals(2, serviceSet.size());
 
     }
 
     @Test
     void findById() {
-   Book book1=  Book.builder().name("abook").build();
-        Optional <Book>bookOptional=Optional.of(book1);
+        Book book1 = Book.builder().name("abook").build();
+        Optional<Book> bookOptional = Optional.of(book1);
 
         when(bookRepository.findById(aLong)).thenReturn(bookOptional);
-        Optional<Book> optionalBook=Optional.of(bookService.findById(aLong));
+        Optional<Book> optionalBook = Optional.of(bookService.findById(aLong));
 
         assertNotNull(optionalBook);
-        assertEquals(optionalBook.orElse(null).getName(),book1.getName());
+        assertEquals(optionalBook.orElse(null).getName(), book1.getName());
     }
-    @Test
-    void save(Book object){
 
-      //  when(bookRepository.save(any())).thenReturn(returnBook);
+    @Test
+    void save(Book object) {
+
+        //  when(bookRepository.save(any())).thenReturn(returnBook);
     }
 }

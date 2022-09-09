@@ -80,7 +80,7 @@
                         <div class="col-md-3">
                             <p th:text="${book.price}">30 min</p>
                         </div>
-
+<!--related to issue no 15,temporary commented
                         <div class="col-md-3">
                             <h5>Publisher:</h5>
                         </div>
@@ -89,16 +89,19 @@
 
                             <p th:text="${book.publisher.getName()}">4</p>
                         </div>
-
+-->
                     </div>
 
                     <div class="row">
                         <div class="col-md-3">
                             <h5>Publish Date:</h5>
                         </div>
-                        <div class="col-md-3">
-                            <p th:text="${book.publishDate}">30 min</p>
+
+                       <div class="col-md-3">
+                          <!--  <p th:text="${#dates.format(book.publishDate, 'dd/MM/yyyy')}"></p> -->
+                               <p th:text="${book.publishDate}" >30 min</p>
                         </div>
+
 
                         <div class="col-md-3">
                             <h5>Pages:</h5>

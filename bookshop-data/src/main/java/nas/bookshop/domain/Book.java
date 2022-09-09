@@ -1,6 +1,7 @@
 package nas.bookshop.domain;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -44,6 +45,7 @@ public class Book extends BaseEntity {
     private Integer pages;
     private String language;
     private Boolean available;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishDate;
 
     @Lob
