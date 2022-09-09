@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class BookController {
     private final BookService bookService;
+    private final String BOOK_BOOKFORM_URL = "book/bookform";
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -27,13 +28,20 @@ public class BookController {
     @GetMapping("book/new")
     String newBook(Model model) {
         model.addAttribute("book", new BookCommand());
-        return "book/bookform";
+        return BOOK_BOOKFORM_URL;
     }
 
     @PostMapping("book")
     String saveOrUpdate(@ModelAttribute("book") BookCommand command) {
         BookCommand savedBookCommand = bookService.saveBookCommand(command);
-
         return "redirect:/book/" + savedBookCommand.getId() + "/show";
+    }
+
+    @GetMapping("book/{id}/update")
+    String updateBook(@PathVariable String id, Model model) {
+
+        model.addAttribute("book", bookService.findCommandById(Long.valueOf(id)));
+
+        return BOOK_BOOKFORM_URL;
     }
 }

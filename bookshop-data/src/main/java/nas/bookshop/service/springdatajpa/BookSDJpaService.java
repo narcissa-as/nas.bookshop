@@ -57,8 +57,15 @@ public class BookSDJpaService implements BookService {
     @Transactional
     @Override
     public BookCommand saveBookCommand(BookCommand command) {
-        Book detachedBook=bookCommandToBook.convert(command);
+        Book detachedBook = bookCommandToBook.convert(command);
         Book savedBook = bookRepository.save(detachedBook);
-        return  bookToBookCommand.convert(savedBook);
+        return bookToBookCommand.convert(savedBook);
+    }
+
+    @Transactional
+    @Override
+    public BookCommand findCommandById(Long along) {
+
+        return bookToBookCommand.convert(findById(along));
     }
 }

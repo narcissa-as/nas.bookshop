@@ -62,11 +62,26 @@ class BookControllerTest {
         when(bookService.saveBookCommand(any())).thenReturn(command);
 
         mockMvc.perform(post("/book").contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id","")
-                .param("name","bookName")
-                .param("page","100")
-        )
+                        .param("id", "")
+                        .param("name", "bookName")
+                        .param("page", "100")
+                )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/book/1/show"));
+    }
+
+    @Test
+    void update() throws Exception {
+
+        //given
+        BookCommand command = new BookCommand();
+        command.setId(1L);
+
+        //when
+        when(bookService.findCommandById(any())).thenReturn(command);
+        //then
+        mockMvc.perform(get("/book/1/update")).andExpect(status().isOk())
+                .andExpect(view().name("book/bookform"))
+                .andExpect(model().attributeExists("book"));
     }
 }

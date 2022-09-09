@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface BookService extends CRUDService<Book,Long>{
     BookCommand saveBookCommand(BookCommand command);
+    BookCommand findCommandById(Long along);
 }
