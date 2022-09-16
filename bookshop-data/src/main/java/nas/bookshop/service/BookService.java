@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface BookService extends CRUDService<Book,Long>{
     BookCommand saveBookCommand(BookCommand command);
     BookCommand findCommandById(Long along);
+    void deleteById(Long idToDelete);
 }

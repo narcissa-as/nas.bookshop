@@ -68,6 +68,7 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
         Category romance = romanceOptional.get();
 
         Book foul = new Book();
+        Author bAuthor=Author.builder().firstName("b").lastName("blast").description("des").build();
         Author foulAuthor = Author.builder().firstName("Chloe").lastName("Gong").description("Chloe Gong is the New York Times " +
                 "bestselling author of These Violent Delights and its sequel, Our Violent Ends, as well as Foul Lady" +
                 " Fortune. She is a recent graduate of the University of Pennsylvania, where she double majored in " +
@@ -87,7 +88,9 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
                         " is now located in New York pretending to be a real adult. You can find her on Twitter, Instagram," +
                         " and TikTok under @TheChloeGong or check out her website at TheChloeGong.com.");
         */
+        Author savedBAuthor=authorRepository.save(bAuthor);
         Author savedFoulAuthor = authorRepository.save(foulAuthor);
+        foul.addAuthor(bAuthor);
         foul.addAuthor(foulAuthor);
 
         foul.getCategories().add(fantasyHistorical);

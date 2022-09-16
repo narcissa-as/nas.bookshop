@@ -1,6 +1,7 @@
 package nas.bookshop.controllers;
 
 import nas.bookshop.command.BookCommand;
+import nas.bookshop.service.AuthorService;
 import nas.bookshop.service.BookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +15,10 @@ public class BookController {
     private final BookService bookService;
     private final String BOOK_BOOKFORM_URL = "book/bookform";
 
-    public BookController(BookService bookService) {
+    private final AuthorService authorService;
+    public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
+        this.authorService = authorService;
     }
 
     @GetMapping("/book/{id}/show")
@@ -43,5 +46,11 @@ public class BookController {
         model.addAttribute("book", bookService.findCommandById(Long.valueOf(id)));
 
         return BOOK_BOOKFORM_URL;
+    }
+
+    @GetMapping("book/{id}/delete")
+    public String deleteBook(@PathVariable String id, Model model) throws Exception {
+        bookService.deleteById(Long.valueOf(id));
+        return "redirect:/";
     }
 }

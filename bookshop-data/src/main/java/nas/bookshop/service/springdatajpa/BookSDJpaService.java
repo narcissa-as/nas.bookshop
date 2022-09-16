@@ -3,8 +3,11 @@ package nas.bookshop.service.springdatajpa;
 import nas.bookshop.command.BookCommand;
 import nas.bookshop.converter.BookCommandToBook;
 import nas.bookshop.converter.BookToBookCommand;
+import nas.bookshop.domain.Author;
 import nas.bookshop.domain.Book;
+import nas.bookshop.repository.AuthorRepository;
 import nas.bookshop.repository.BookRepository;
+import nas.bookshop.service.AuthorService;
 import nas.bookshop.service.BookService;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +20,20 @@ import java.util.Set;
 public class BookSDJpaService implements BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    //private final CategoryRepository categoryRepository;
+
     private final BookCommandToBook bookCommandToBook;
     private final BookToBookCommand bookToBookCommand;
 
-    public BookSDJpaService(BookRepository bookRepository, BookCommandToBook bookCommandToBook, BookToBookCommand bookCommand, BookToBookCommand bookToBookCommand) {
+    private final AuthorService authorService;
+
+    public BookSDJpaService(BookRepository bookRepository, BookCommandToBook bookCommandToBook, BookToBookCommand bookCommand, AuthorRepository authorRepository, BookToBookCommand bookToBookCommand, AuthorService authorService) {
         this.bookRepository = bookRepository;
         this.bookCommandToBook = bookCommandToBook;
+        this.authorRepository = authorRepository;
         this.bookToBookCommand = bookToBookCommand;
+        this.authorService = authorService;
     }
 
     @Override
@@ -46,8 +56,22 @@ public class BookSDJpaService implements BookService {
 
     @Override
     public void deleteById(Long aLong) {
-        bookRepository.deleteById(aLong);
+
+        Optional<Book> bookOptional = bookRepository.findById(aLong);
+
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            //deleting this Books from all authors, it means look in Authors table and delete this book for all authors
+            Set<Author> authorSet = new HashSet<>();
+            book.getAuthors().iterator().forEachRemaining(authorSet::add);
+            authorService.deleteAuthorsOfABook(aLong, authorSet);
+            //deleting all authors of this book
+            book.getAuthors().clear();
+            //deleting Book
+            bookRepository.delete(book);
+        }
     }
+
 
     @Override
     public void delete(Book object) {
