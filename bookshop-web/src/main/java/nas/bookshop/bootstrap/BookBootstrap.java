@@ -38,11 +38,11 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
 
     private void
     loadData() {
-        
+
         List<Book> books = new ArrayList<>(2);
-        
+
         //Creating Book1
-        
+
         //getting required Formats
         Optional<Format> hardCoverOptional = formatRepository.findByName("Hardcover");
         if (!hardCoverOptional.isPresent()) {
@@ -68,7 +68,7 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
         Category romance = romanceOptional.get();
 
         Book foul = new Book();
-        Author bAuthor=Author.builder().firstName("b").lastName("blast").description("des").build();
+        Author bAuthor = Author.builder().firstName("b").lastName("blast").description("des").build();
         Author foulAuthor = Author.builder().firstName("Chloe").lastName("Gong").description("Chloe Gong is the New York Times " +
                 "bestselling author of These Violent Delights and its sequel, Our Violent Ends, as well as Foul Lady" +
                 " Fortune. She is a recent graduate of the University of Pennsylvania, where she double majored in " +
@@ -88,7 +88,7 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
                         " is now located in New York pretending to be a real adult. You can find her on Twitter, Instagram," +
                         " and TikTok under @TheChloeGong or check out her website at TheChloeGong.com.");
         */
-        Author savedBAuthor=authorRepository.save(bAuthor);
+        Author savedBAuthor = authorRepository.save(bAuthor);
         Author savedFoulAuthor = authorRepository.save(foulAuthor);
         foul.addAuthor(bAuthor);
         foul.addAuthor(foulAuthor);
@@ -99,7 +99,7 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
         foul.getFormats().add(hardcover);
         foul.getFormats().add(compactDisc);
         ///set Book detail Properties
-        
+
         foul.setName("Foul Lady Fortune");
         foul.setPrice("$20.45");
         foul.setPages(528);
@@ -108,7 +108,7 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
         foul.setEANUPC(9781665905589L);
         String foulPublishDate = "2017-01-13";
         foul.setPublishDate(LocalDate.parse(foulPublishDate));
-        
+
         foul.setDescription("From the #1 New York Times bestselling author of These Violent Delights and Our Violent" +
                 " Ends comes the first book in a captivating new duology following an ill-matched pair of spies posing" +
                 " as a married couple to investigate a series of brutal murders in 1930s Shanghai.\n" +
@@ -224,6 +224,17 @@ public class BookBootstrap implements ApplicationListener<ContextRefreshedEvent>
         plant.setPublisher(savedPlantPublisher);
 
         Book savedPlantBook = bookRepository.save(plant);
+
+        //creating a Book that has a Author in Author table
+        Book bookChloeAuthor = new Book();
+
+        bookChloeAuthor.addAuthor(foulAuthor);
+
+        bookChloeAuthor.setName("Everything Is Temporary: Illustrated Contemplations on How Death Shapes Our Lives");
+        bookChloeAuthor.setPublisher(plantPublisher);
+        bookChloeAuthor.setPrice("70");
+        bookChloeAuthor.setPages(120);
+        Book savedBookChloeAuthor = bookRepository.save(bookChloeAuthor);
 
     }
 }
