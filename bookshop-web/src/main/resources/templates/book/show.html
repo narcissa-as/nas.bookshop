@@ -25,7 +25,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-12">
                                 <h1 class="panel-title" th:text="${book.name}">Recipe Description Here!</h1>
                             </div>
 
@@ -43,15 +43,21 @@
                                 <h5>AUTHORS:</h5>
                             </div>
                             <div class="col-md-3">
-                                <ul>
-                                    <li th:remove="all">cat one</li>
-                                    <li th:remove="all">cat two</li>
+                                <ul th:each="author : ${book.authors}">
+                                    <a th:href="@{'/author/'+ ${author.getId()}+ '/show'}">
                                     <!--/*@thymesVar id="" type="nas.bookshop.domain.domain.book*/-->
-                                    <li th:each="author : ${book.authors}"
-                                        th:text="${(author.getFirstName() +' '+ author.getLastName()) }">cat three
-                                    </li>
+                                        <li th:text="${(author.getFirstName() +' '+ author.getLastName()) }">cat three
+                                        </li>
+                                    </a>
                                 </ul>
                             </div>
+                            <!--/*@thymesVar id="" type="nas.bookshop.domain.domain.book*/-->
+                            <div class="col-md-3">
+                                <a class="btn btn-default" th:href="@{'/book/'+ ${book.id}+ '/update'}">Edit Book</a>
+                                <a class="btn btn-default" th:href="@{'/book/'+ ${book.id}+ '/delete'}">Delete Book</a>
+                            </div>
+
+
                         </div>
                     </div>
                     <div class="row">
@@ -80,16 +86,16 @@
                         <div class="col-md-3">
                             <p th:text="${book.price}">30 min</p>
                         </div>
-<!--related to issue no 15,temporary commented
-                        <div class="col-md-3">
-                            <h5>Publisher:</h5>
-                        </div>
+                        <!--related to issue no 15,temporary commented
+                                                <div class="col-md-3">
+                                                    <h5>Publisher:</h5>
+                                                </div>
 
-                        <div class="col-md-3">
+                                                <div class="col-md-3">
 
-                            <p th:text="${book.publisher.getName()}">4</p>
-                        </div>
--->
+                                                    <p th:text="${book.publisher.getName()}">4</p>
+                                                </div>
+                        -->
                     </div>
 
                     <div class="row">
@@ -97,9 +103,9 @@
                             <h5>Publish Date:</h5>
                         </div>
 
-                       <div class="col-md-3">
-                          <!--  <p th:text="${#dates.format(book.publishDate, 'dd/MM/yyyy')}"></p> -->
-                               <p th:text="${book.publishDate}" >30 min</p>
+                        <div class="col-md-3">
+                            <!--  <p th:text="${#dates.format(book.publishDate, 'dd/MM/yyyy')}"></p> -->
+                            <p th:text="${book.publishDate}">30 min</p>
                         </div>
 
 
