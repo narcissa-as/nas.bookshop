@@ -1,8 +1,7 @@
-package nas.service;
+package nas.bookshop.service.springdatajpa;
 
 import nas.bookshop.domain.Book;
 import nas.bookshop.repository.BookRepository;
-import nas.bookshop.service.springdatajpa.BookSDJpaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BookServiceTest {
+class BookSDJpaServiceTest {
     @Mock
     BookRepository bookRepository;
     @InjectMocks
@@ -27,12 +26,14 @@ class BookServiceTest {
 
     Book returnBook;
 
+    Long aLong = 1L;
+
     @BeforeEach
     void setUp() {
         returnBook = Book.builder().name("book1").build();
     }
 
-    Long aLong = 1L;
+
 
     @Test
     void findAll() {

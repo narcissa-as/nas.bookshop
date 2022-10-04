@@ -2,6 +2,7 @@ package nas.bookshop.domain;
 
 import lombok.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,7 +23,7 @@ public class Publisher extends BaseEntity {
 //    private PublicationOwner owner;
     private String name;
     private String address;
-    @OneToMany(mappedBy = "publisher")
+    @OneToMany(mappedBy = "publisher" ,cascade = CascadeType.ALL)
     private Set<Book> books = new HashSet<>();
 /*
     public void setPublisher(String name,String firstName, String lastName, String address) {

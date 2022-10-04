@@ -31,7 +31,9 @@
              and the method is post because client side sends the recipe properties -data- to server side-->
             <!--  <form th:object="${recipe}" th:action="@{/recipe/}" method="post"> -->
             <!-- after adding update part, changing method part only-->
-            <form th:object="${book}" th:action="@{/book/}" method="post">
+            <!--th:action="@{/book/}"-->
+            <form th:object="${book}"  method="post">
+             <!--   <form th:object="${owner}" class="form-horizontal" id="add-owner-form" method="post">-->
                 <!--if we have any rejected error in BindingResult, then show a red box in bottom of the page,
                 class belongs to Bootstrap!-->
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
@@ -48,7 +50,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <!--"form-group": needed for optimum spacing-->
-                                <div class="col-md-3 form-group"
+                                <div class="col-md-9 form-group"
                                      th:class="${#fields.hasErrors('name')}
                                 ? 'col-md-3 form-group hasErrors' : 'col-md-3 form-group'">
                                     <label>Book Name:</label>
@@ -64,7 +66,28 @@ ${#fields.errors('name')}" th:text="${err}"/>
 
                                     </span>
                                 </div>
+
+
+                                <!--<div class="row">-->
+
+
+                                <!-- <input type="text" class="form-control" th:field="*{name}">-->
+                                <!--     <input type="text" class="form-control" th:field="*{publisher}">-->
+                                <!--      <form:select-->
+                                <div class="col-md-3 form-group">
+                                    <label>Publisher:</label>
+
+                                    <select class="form-control" name="publisher.id" th:field="*{publisherId}">
+                                        <option th:each="publisherEach : ${publishers}"
+                                                th:value="${publisherEach.id}" th:text="${publisherEach.name}">Each
+                                        </option>
+                                        <!-- th:selected="${publisherEach.id.equals(book.publisher.id)}"-->
+
+                                    </select>
+                                </div>
+
                             </div>
+
                             <div class="row">
                                 <!--stands for a group:here for categories  -->
                                 <div class="col-md-3 form-group">
@@ -84,6 +107,20 @@ ${#fields.errors('name')}" th:text="${err}"/>
                                         </label>
                                     </div>
                                 </div>
+
+                                <div class="col-md-3 form-group">
+                                    <label>Formats:</label>
+                                    <select class="form-control" name="format.id">
+                                        <option th:each="formatEach : ${formats}"
+                                                th:value="${formatEach.id}" th:text="${formatEach.name}"
+                                                th:field="*{formats}">Each
+                                        </option>
+
+                                        <!-- th:selected="${formatEach.id.equals(book.format.id)}"-->
+
+                                    </select>
+                                </div>
+
                             </div>
                             <!--here was the list-->
                             <div class="row">
@@ -108,7 +145,7 @@ ${#fields.errors('name')}" th:text="${err}"/>
                                     <div class="radio">
                                         <label>
                                             <input type="checkbox" value="*{available}"/>
-                                          Available
+                                            Available
                                         </label>
                                     </div>
 
@@ -202,7 +239,18 @@ ${#fields.errors('name')}" th:text="${err}"/>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <!--old path for having submit button, but because of having 2 different posts for
+                    new book, I changed it in this way.-->
+                  <!--  <button type="submit" class="btn btn-primary">Submit</button>-->
+
+                    <div class="form-group">
+                       <!-- <div class="col-sm-offset-2 col-sm-10">-->
+                            <button
+                                    class="btn btn-primary" type="submit" th:text="Save">Add
+                                Owner</button>
+                       <!-- </div>-->
+                    </div>
+
                 </div>
             </form>
         </div>

@@ -45,7 +45,7 @@
                             <div class="col-md-3">
                                 <ul th:each="author : ${book.authors}">
                                     <a th:href="@{'/author/'+ ${author.getId()}+ '/show'}">
-                                    <!--/*@thymesVar id="" type="nas.bookshop.domain.domain.book*/-->
+                                        <!--/*@thymesVar id="" type="nas.bookshop.domain.domain.book*/-->
                                         <li th:text="${(author.getFirstName() +' '+ author.getLastName()) }">cat three
                                         </li>
                                     </a>
@@ -59,7 +59,20 @@
 
 
                         </div>
+
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5>Publisher</h5>
+                        </div>
+                        <div class="col-md-9">
+                            <!--<p th:text="${recipe.note.recipeNotes}">-->
+                            <p th:text="${book.publisher.name}">publisher</p>
+                        </div>
+                    </div>
+
+
                     <div class="row">
                         <div class="col-md-3">
                             <h5>FORMATS:</h5>

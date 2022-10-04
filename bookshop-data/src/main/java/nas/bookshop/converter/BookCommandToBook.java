@@ -55,7 +55,7 @@ public class BookCommandToBook implements Converter<BookCommand, Book> {
         }
         if (source.getPublisherId()!=null){
             Publisher publisher=new Publisher();
-            publisher.setId(source.getId());
+            publisher.setId(source.getPublisherId());
             book.setPublisher(publisher);
             publisher.getBooks().add(book);
         }
