@@ -32,8 +32,8 @@
             <!--  <form th:object="${recipe}" th:action="@{/recipe/}" method="post"> -->
             <!-- after adding update part, changing method part only-->
             <!--th:action="@{/book/}"-->
-            <form th:object="${book}"  method="post">
-             <!--   <form th:object="${owner}" class="form-horizontal" id="add-owner-form" method="post">-->
+            <form th:object="${book}" method="post">
+                <!--   <form th:object="${owner}" class="form-horizontal" id="add-owner-form" method="post">-->
                 <!--if we have any rejected error in BindingResult, then show a red box in bottom of the page,
                 class belongs to Bootstrap!-->
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
@@ -45,7 +45,15 @@
                 <div class="pannel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Book Information</h1>
+                            <div class="row">
+                                <div class="col-md-9 form-group">
+                                    <h1 class="panel-title">Book Information</h1>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <a class="btn btn-default" th:href="@{'/book/'+ ${book.id}+ '/image'}">Edit Image Of
+                                        The Book</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="panel-body">
                             <div class="row">
@@ -119,6 +127,12 @@ ${#fields.errors('name')}" th:text="${err}"/>
                                         <!-- th:selected="${formatEach.id.equals(book.format.id)}"-->
 
                                     </select>
+                                </div>
+
+
+                                <div class="col-md-3 form-group">
+                                    <label>Categories:</label>
+
                                 </div>
 
                             </div>
@@ -241,14 +255,15 @@ ${#fields.errors('name')}" th:text="${err}"/>
                     </div>
                     <!--old path for having submit button, but because of having 2 different posts for
                     new book, I changed it in this way.-->
-                  <!--  <button type="submit" class="btn btn-primary">Submit</button>-->
+                    <!--  <button type="submit" class="btn btn-primary">Submit</button>-->
 
                     <div class="form-group">
-                       <!-- <div class="col-sm-offset-2 col-sm-10">-->
-                            <button
-                                    class="btn btn-primary" type="submit" th:text="Save">Add
-                                Owner</button>
-                       <!-- </div>-->
+                        <!-- <div class="col-sm-offset-2 col-sm-10">-->
+                        <button
+                                class="btn btn-primary" type="submit" th:text="Save">Add
+                            Owner
+                        </button>
+                        <!-- </div>-->
                     </div>
 
                 </div>
