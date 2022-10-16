@@ -8,11 +8,15 @@ import nas.bookshop.service.FormatService;
 import nas.bookshop.service.PublisherService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
+//@RequestMapping({"/book"})
 @Controller
 public class BookController {
     private final BookService bookService;
@@ -56,7 +60,7 @@ public class BookController {
     }
 
     @PostMapping("book/{id}/update")
-    String saveOrUpdate(@ModelAttribute("book") BookCommand command,@PathVariable String id) {
+    String saveOrUpdate(@ModelAttribute("book") BookCommand command, @PathVariable String id) {
      /*   Publisher publisher=new Publisher();
         publisher.setId(command.getPublisherId());
         //publisher.setName(command.getpu);
@@ -101,5 +105,31 @@ public class BookController {
         Long publisherId = Long.valueOf(id);
         return "redirect:/publisher/" + publisherId + "/show";
 
+    }
+
+    @GetMapping("book/find")
+    public String showfindBooks(Model model) {
+        BookCommand bookCommand = new BookCommand();
+        model.addAttribute("book", bookCommand);
+        return "book/findBooks";
+    }
+
+    @PostMapping("book/find")
+    // @GetMapping()
+    public String findBooks(Book book, BindingResult result, Model model) {
+        //model.addAttribute(bookName)
+        if (book.getName() == null) {
+            book.setName("");
+        }
+
+        List<Book> results = bookService.findAllByNameLike("%" + book.getName() + "%");
+
+        if (results.isEmpty()) {
+            result.rejectValue("name", "notFound", "not found");
+            return "book/findBooks";
+        } else {
+            model.addAttribute("books", results);
+        }
+        return "book/showfindbooks";
     }
 }

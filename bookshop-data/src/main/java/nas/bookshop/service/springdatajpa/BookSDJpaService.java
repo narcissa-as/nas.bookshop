@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -72,7 +73,6 @@ public class BookSDJpaService implements BookService {
         }
     }
 
-
     @Override
     public void delete(Book object) {
         bookRepository.delete(object);
@@ -91,5 +91,12 @@ public class BookSDJpaService implements BookService {
     public BookCommand findCommandById(Long along) {
 
         return bookToBookCommand.convert(findById(along));
+    }
+
+    @Override
+    public List<Book> findAllByNameLike(String name) {
+
+        return bookRepository.findAllByNameLike(name);
+
     }
 }

@@ -9,13 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BookSDJpaServiceTest {
@@ -66,5 +65,21 @@ class BookSDJpaServiceTest {
     void save(Book object) {
 
         //  when(bookRepository.save(any())).thenReturn(returnBook);
+    }
+
+    @Test
+    void findAllByNameLike() {
+
+        List<Book>results=new ArrayList<>();
+        results.add(Book.builder().name("book").build());
+        results.add(Book.builder().name("book").build());
+
+        //when
+        when(bookRepository.findAllByNameLike(any())).thenReturn(results);
+
+       List<Book>booksResult= bookService.findAllByNameLike("name");
+        verify(bookRepository,times(1)).findAllByNameLike(any());
+        assertEquals(booksResult.size(),2);
+
     }
 }

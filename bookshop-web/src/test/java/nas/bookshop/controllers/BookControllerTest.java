@@ -13,6 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,17 +31,20 @@ class BookControllerTest {
     BookController bookController;
     MockMvc mockMvc;
 
-    Book testBook = new Book();
+    Book testBook1 = new Book();
+    Book testBook2 = new Book();
+
 
     @BeforeEach
     void setUp() {
-        testBook.setName("newBook");
+        testBook1.setName("newBook");
+        testBook1.setName("newBook2");
         mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
     }
 
     @Test
     void showById() throws Exception {
-        when(bookService.findById(any())).thenReturn(testBook);
+        when(bookService.findById(any())).thenReturn(testBook1);
 
         mockMvc.perform(get("/book/1/show")).
                 andExpect(status().isOk()).andExpect(view().name("book/show"))
@@ -94,4 +101,38 @@ class BookControllerTest {
 
         verify(bookService, times(1)).deleteById(1L);
     }
+
+    @Test
+    void showfindBooks() throws Exception{
+        mockMvc.perform(get("/book/find"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("book/findBooks"))
+                .andExpect(model().attributeExists("book"));
+            }
+
+    @Test
+    void findBooksReturnMany() throws Exception{
+        //given
+        List<Book> results=new ArrayList<>();
+        results.add(testBook1);
+        results.add(testBook2);
+        //when
+        when(bookService.findAllByNameLike(any())).thenReturn(results);
+        //then
+        mockMvc.perform(post("/book/find"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("books"))
+                .andExpect(view().name("book/showfindbooks"));
+
+    }
+    @Test
+    void findBooksReturnNoResults() throws Exception {
+        //when
+        when(bookService.findAllByNameLike(any())).thenReturn(Arrays.asList());
+        mockMvc.perform(post("/book/find"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("book/findBooks"));
+
+    }
+
 }
