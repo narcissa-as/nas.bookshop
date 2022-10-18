@@ -57,6 +57,10 @@
                                 <a class="btn btn-default" th:href="@{'/book/'+ ${book.id}+ '/delete'}">Delete Book</a>
                             </div>
 
+              <!--              <span class="help-inline"><div
+                                    th:if="${#fields.hasAnyErrors()}">
+              <p th:each="err : ${#fields.allErrors()}" th:text="${err}">Error</p>
+            </div></span>-->
 
 
                         </div>

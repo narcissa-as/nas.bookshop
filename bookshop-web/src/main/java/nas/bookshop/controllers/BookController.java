@@ -2,6 +2,8 @@ package nas.bookshop.controllers;
 
 import nas.bookshop.command.BookCommand;
 import nas.bookshop.domain.Book;
+import nas.bookshop.domain.Format;
+import nas.bookshop.domain.Publisher;
 import nas.bookshop.service.AuthorService;
 import nas.bookshop.service.BookService;
 import nas.bookshop.service.FormatService;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 
 //@RequestMapping({"/book"})
@@ -33,9 +37,29 @@ public class BookController {
         this.formatService = formatService;
     }
 
+    //populating drop-down list of Publishers in all view methods,before
+    // I wrote it before for every method that its view need this values for its drop-down lists.
+    //but now I write it one time and can use it in every method of this Controller
+    @ModelAttribute("publishers")
+    public Collection<Publisher> populatePublishersList() {
+        return publisherService.findAll();
+    }
+
+    @ModelAttribute("formats")
+    public Collection<Format> populateCategoryList() {
+        return formatService.findAll();
+    }
+
+    //replace and deleting all "Book book = bookService.findById(Long.valueOf(id))"
+    //from all Controller methods with this method
+/*    @ModelAttribute("book")
+    public Book findBookById(@PathVariable String id) {
+        return (bookService.findById(Long.valueOf(id)));
+    }*/
+
     @GetMapping("/book/{id}/show")
     public String showById(@PathVariable String id, Model model) {
-        Book newBook = bookService.findById(Long.valueOf(id));
+        //  Book newBook = bookService.findById(Long.valueOf(id));
         model.addAttribute("book", bookService.findById(Long.valueOf(id)));
         return "book/show";
     }
@@ -43,39 +67,34 @@ public class BookController {
     @GetMapping("book/new")
     String newBook(Model model) {
         model.addAttribute("book", new BookCommand());
-        model.addAttribute("publishers", publisherService.findAll());
-        model.addAttribute("formats", formatService.findAll());
         return BOOK_BOOKFORM_URL;
     }
 
     @PostMapping("book")
     String saveOrUpdate(@ModelAttribute("book") BookCommand command) {
-     /*   Publisher publisher=new Publisher();
-        publisher.setId(command.getPublisherId());
-        //publisher.setName(command.getpu);
-        publisherService.save(publisher);*/
 
         BookCommand savedBookCommand = bookService.saveBookCommand(command);
         return "redirect:/book/" + savedBookCommand.getId() + "/show";
     }
 
     @PostMapping("book/{id}/update")
-    String saveOrUpdate(@ModelAttribute("book") BookCommand command, @PathVariable String id) {
-     /*   Publisher publisher=new Publisher();
-        publisher.setId(command.getPublisherId());
-        //publisher.setName(command.getpu);
-        publisherService.save(publisher);*/
+    String saveOrUpdate(@Valid Book book, BindingResult result, @ModelAttribute("book") BookCommand command, @PathVariable String id
+    ) {
+
+        if (result.hasErrors()) {
+            //   result.rejectValue("name","notFound", "not found");
+            return "index";
+        }
 
         BookCommand savedBookCommand = bookService.saveBookCommand(command);
         return "redirect:/book/" + savedBookCommand.getId() + "/show";
+
     }
 
     @GetMapping("book/{id}/update")
     String updateBook(@PathVariable String id, Model model) {
 
         model.addAttribute("book", bookService.findCommandById(Long.valueOf(id)));
-        model.addAttribute("publishers", publisherService.findAll());
-        model.addAttribute("formats", formatService.findAll());
         return BOOK_BOOKFORM_URL;
     }
 
@@ -90,10 +109,7 @@ public class BookController {
     public String newBookForPublisher(@PathVariable String id, Model model) {
 
         model.addAttribute("publisher", Long.valueOf(id));
-
         model.addAttribute("book", new BookCommand());
-        model.addAttribute("publishers", publisherService.findAll());
-        model.addAttribute("formats", formatService.findAll());
 
         return BOOK_BOOKFORM_URL;
 

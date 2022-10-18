@@ -3,6 +3,8 @@ package nas.bookshop.controllers;
 import nas.bookshop.command.BookCommand;
 import nas.bookshop.domain.Book;
 import nas.bookshop.service.BookService;
+import nas.bookshop.service.FormatService;
+import nas.bookshop.service.PublisherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookControllerTest {
     @Mock
     BookService bookService;
+    @Mock
+    PublisherService publisherService;
+    @Mock
+    FormatService formatService;
+
     @InjectMocks
     BookController bookController;
     MockMvc mockMvc;
@@ -34,16 +41,34 @@ class BookControllerTest {
     Book testBook1 = new Book();
     Book testBook2 = new Book();
 
-
+    //Values of @modelAttribute that should be populated
+  /*  Set<Publisher>publishers;
+    Set<Format>formats;
+*/
     @BeforeEach
     void setUp() {
         testBook1.setName("newBook");
         testBook1.setName("newBook2");
+
+        //populating drop-downs that are parameters in HTML files that should be defined
+  /*      publishers=new HashSet<>();
+
+        publishers.add(Publisher.builder().name("publisher1").build());
+        publishers.add(Publisher.builder().name("publisher2").build());
+
+        formats=new HashSet<>();
+        formats.add(Format.builder().name("format1").build());
+        formats.add(Format.builder().name("format2").build());*/
+
         mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
     }
 
     @Test
     void showById() throws Exception {
+        //these 2 lines are for @ModelAttribute parameters definition that view HTML need them
+      /*  when(publisherService.findAll()).thenReturn(publishers);
+        when(formatService.findAll()).thenReturn(formats);*/
+
         when(bookService.findById(any())).thenReturn(testBook1);
 
         mockMvc.perform(get("/book/1/show")).
@@ -53,6 +78,10 @@ class BookControllerTest {
 
     @Test
     void newBook() throws Exception {
+        //these 2 lines are for @ModelAttribute parameters definition that view HTML need them
+      /*  when(publisherService.findAll()).thenReturn(publishers);
+        when(formatService.findAll()).thenReturn(formats);*/
+
         mockMvc.perform(get("/book/new"))
                 .andExpect(status().isOk()).andExpect(model().attributeExists("book")).
                 andExpect(view().name("book/bookform"));
@@ -103,7 +132,7 @@ class BookControllerTest {
     }
 
     @Test
-    void showfindBooks() throws Exception{
+    void showFindBooks() throws Exception{
         mockMvc.perform(get("/book/find"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("book/findBooks"))
