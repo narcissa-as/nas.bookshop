@@ -1,7 +1,9 @@
 package nas.bookshop.service.springdatajpa;
 
 import nas.bookshop.domain.Book;
+import nas.bookshop.exceptions.NotFoundException;
 import nas.bookshop.repository.BookRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,7 +62,23 @@ class BookSDJpaServiceTest {
         assertNotNull(optionalBook);
         assertEquals(optionalBook.orElse(null).getName(), book1.getName());
     }
-
+    //JUnit4 version code is like below but I commented it because we use Junit5
+    //and should use like
+    //  @Test(expected= NotFoundException.class)
+    @Test
+    void getFindByIdNotFound(){
+        //given
+        Optional<Book>bookOptional=Optional.empty();
+        //when
+        when(bookRepository.findById(anyLong())).thenReturn(bookOptional);
+        //we move this part to Assertion line due to using Assertions
+       // Book book=bookService.findById(1L);
+       // assertThrows(PersistenceException.class, () -> invalidUserRepository.save(user));
+        //Assertions.assertThrows(NotFoundException.class, () -> { throw new NotFoundException();});
+        //In Jupiter expected is replaced because new way Improves the test's readability. we declare that what exactly
+        // lead to Exception,for example in line below after -> we define that this part exactly lead to NotFoundException.
+        Assertions.assertThrows(NotFoundException.class, () -> bookService.findById(1L));
+    }
     @Test
     void save(Book object) {
 

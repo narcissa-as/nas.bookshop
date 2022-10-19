@@ -2,6 +2,9 @@ package nas.bookshop.controllers;
 
 import nas.bookshop.command.BookCommand;
 import nas.bookshop.domain.Book;
+import nas.bookshop.domain.Format;
+import nas.bookshop.domain.Publisher;
+import nas.bookshop.exceptions.NotFoundException;
 import nas.bookshop.service.BookService;
 import nas.bookshop.service.FormatService;
 import nas.bookshop.service.PublisherService;
@@ -15,9 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -42,23 +43,23 @@ class BookControllerTest {
     Book testBook2 = new Book();
 
     //Values of @modelAttribute that should be populated
-  /*  Set<Publisher>publishers;
-    Set<Format>formats;
-*/
+    Set<Publisher> publishers;
+    Set<Format> formats;
+
     @BeforeEach
     void setUp() {
         testBook1.setName("newBook");
-        testBook1.setName("newBook2");
+        testBook2.setName("newBook2");
 
         //populating drop-downs that are parameters in HTML files that should be defined
-  /*      publishers=new HashSet<>();
+        publishers = new HashSet<>();
 
         publishers.add(Publisher.builder().name("publisher1").build());
         publishers.add(Publisher.builder().name("publisher2").build());
 
-        formats=new HashSet<>();
+        formats = new HashSet<>();
         formats.add(Format.builder().name("format1").build());
-        formats.add(Format.builder().name("format2").build());*/
+        formats.add(Format.builder().name("format2").build());
 
         mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
     }
@@ -66,8 +67,8 @@ class BookControllerTest {
     @Test
     void showById() throws Exception {
         //these 2 lines are for @ModelAttribute parameters definition that view HTML need them
-      /*  when(publisherService.findAll()).thenReturn(publishers);
-        when(formatService.findAll()).thenReturn(formats);*/
+        when(publisherService.findAll()).thenReturn(publishers);
+        when(formatService.findAll()).thenReturn(formats);
 
         when(bookService.findById(any())).thenReturn(testBook1);
 
@@ -77,10 +78,20 @@ class BookControllerTest {
     }
 
     @Test
+    void showByIdNotFound() throws Exception {
+        //when
+        when(bookService.findById(any())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/book/1/show"))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
     void newBook() throws Exception {
         //these 2 lines are for @ModelAttribute parameters definition that view HTML need them
-      /*  when(publisherService.findAll()).thenReturn(publishers);
-        when(formatService.findAll()).thenReturn(formats);*/
+        when(publisherService.findAll()).thenReturn(publishers);
+        when(formatService.findAll()).thenReturn(formats);
 
         mockMvc.perform(get("/book/new"))
                 .andExpect(status().isOk()).andExpect(model().attributeExists("book")).
@@ -132,17 +143,17 @@ class BookControllerTest {
     }
 
     @Test
-    void showFindBooks() throws Exception{
+    void showFindBooks() throws Exception {
         mockMvc.perform(get("/book/find"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("book/findBooks"))
                 .andExpect(model().attributeExists("book"));
-            }
+    }
 
     @Test
-    void findBooksReturnMany() throws Exception{
+    void findBooksReturnMany() throws Exception {
         //given
-        List<Book> results=new ArrayList<>();
+        List<Book> results = new ArrayList<>();
         results.add(testBook1);
         results.add(testBook2);
         //when
@@ -154,6 +165,7 @@ class BookControllerTest {
                 .andExpect(view().name("book/showfindbooks"));
 
     }
+
     @Test
     void findBooksReturnNoResults() throws Exception {
         //when

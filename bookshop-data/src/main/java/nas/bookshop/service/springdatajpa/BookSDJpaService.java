@@ -5,6 +5,7 @@ import nas.bookshop.converter.BookCommandToBook;
 import nas.bookshop.converter.BookToBookCommand;
 import nas.bookshop.domain.Author;
 import nas.bookshop.domain.Book;
+import nas.bookshop.exceptions.NotFoundException;
 import nas.bookshop.repository.AuthorRepository;
 import nas.bookshop.repository.BookRepository;
 import nas.bookshop.service.AuthorService;
@@ -47,6 +48,9 @@ public class BookSDJpaService implements BookService {
     @Override
     public Book findById(Long aLong) {
         Optional<Book> optionalBook = bookRepository.findById(aLong);
+        if(optionalBook.isEmpty()){
+            throw new  NotFoundException("Book not found for id Number: "+aLong );
+        }
         return optionalBook.orElse(null);
     }
 
