@@ -1,26 +1,27 @@
 package nas.bookshop.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import nas.bookshop.command.BookCommand;
 import nas.bookshop.domain.Book;
 import nas.bookshop.domain.Format;
 import nas.bookshop.domain.Publisher;
+import nas.bookshop.exceptions.NotFoundException;
 import nas.bookshop.service.AuthorService;
 import nas.bookshop.service.BookService;
 import nas.bookshop.service.FormatService;
 import nas.bookshop.service.PublisherService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 
-//@RequestMapping({"/book"})
+@Slf4j
 @Controller
 public class BookController {
     private final BookService bookService;
@@ -147,5 +148,19 @@ public class BookController {
             model.addAttribute("books", results);
         }
         return "book/showfindbooks";
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound(Exception exception) {
+        log.error("Handling Not Found Exception");
+        log.error(exception.getMessage());
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.addObject("exception", exception);
+        modelAndView.setViewName("404error");
+
+        return modelAndView;
     }
 }

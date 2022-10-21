@@ -176,4 +176,12 @@ class BookControllerTest {
 
     }
 
+    @Test
+    void handleNotFound() throws Exception {
+        when(bookService.findById(any())).thenThrow(NotFoundException.class);
+        mockMvc.perform(get("/book/1/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+
+    }
 }
