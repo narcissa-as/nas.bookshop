@@ -184,4 +184,16 @@ class BookControllerTest {
                 .andExpect(view().name("404error"));
 
     }
+
+    @Test
+    void handleNumberFormat() throws Exception{
+
+//        when(bookService.findById(any())).thenThrow(NumberFormatException.class);
+
+        mockMvc.perform(get("/book/h/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"))
+                .andExpect(model().attributeExists("exception"));
+
+    }
 }
