@@ -61,7 +61,8 @@ class BookControllerTest {
         formats.add(Format.builder().name("format1").build());
         formats.add(Format.builder().name("format2").build());
 
-        mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(bookController).setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
     @Test
@@ -186,7 +187,7 @@ class BookControllerTest {
     }
 
     @Test
-    void handleNumberFormat() throws Exception{
+    void handleNumberFormat() throws Exception {
 
 //        when(bookService.findById(any())).thenThrow(NumberFormatException.class);
 

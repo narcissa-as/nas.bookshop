@@ -1,6 +1,7 @@
 package nas.bookshop.service.springdatajpa;
 
 import nas.bookshop.domain.Publisher;
+import nas.bookshop.exceptions.NotFoundException;
 import nas.bookshop.repository.PublisherRepository;
 import nas.bookshop.service.PublisherService;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,16 @@ public class PublisherSDJpaService implements PublisherService {
     public Set<Publisher> findAll() {
         Set<Publisher> publishers = new HashSet<>();
         publisherRepository.findAll().forEach(publishers::add);
+        if(publishers.isEmpty()){
+            throw new NotFoundException("No Publisher Found");
+        }
         return publishers;
     }
 
     public Publisher findById(Long id) {
         Optional<Publisher> publisherOptional = publisherRepository.findById(id);
         if (!publisherOptional.isPresent()) {
-            return null;
+           throw new NotFoundException("Publisher Not Found for ID Number: " +id.toString());
         }
         return publisherOptional.orElse(null);
     }

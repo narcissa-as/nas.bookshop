@@ -1,6 +1,7 @@
 package nas.bookshop.controllers;
 
 import nas.bookshop.command.BookCommand;
+import nas.bookshop.domain.Publisher;
 import nas.bookshop.service.PublisherService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ public class PublisherController {
 
     @GetMapping("/publisher/{id}/show")
     public String showPublisher(@PathVariable String id, Model model) {
+        Publisher publisher=publisherService.findById(Long.valueOf(id));
         model.addAttribute("publisher", publisherService.findById(Long.valueOf(id)));
         return "publisher/show";
     }
@@ -34,4 +36,5 @@ public class PublisherController {
         Long publisherId=Long.valueOf(id);
         return "redirect:/publisher/" + publisherId +"/show";
     }*/
+
 }
