@@ -36,9 +36,9 @@
                 <!--   <form th:object="${owner}" class="form-horizontal" id="add-owner-form" method="post">-->
                 <!--if we have any rejected error in BindingResult, then show a red box in bottom of the page,
                 class belongs to Bootstrap!-->
-                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+              <!--  <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                     <p>Please Correct Errors Below</p>
-                </div>
+                </div>-->
                 <!--this is a Generic form for create and update so when we have not Id it's a create type and when
                  we have Id is an update-->
                 <input type="hidden" th:field="*{id}"/>

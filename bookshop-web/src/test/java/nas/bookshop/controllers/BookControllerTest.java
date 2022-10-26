@@ -61,8 +61,8 @@ class BookControllerTest {
         formats.add(Format.builder().name("format1").build());
         formats.add(Format.builder().name("format2").build());
 
-        mockMvc = MockMvcBuilders.standaloneSetup(bookController).setControllerAdvice(new ControllerExceptionHandler())
-                .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(bookController)
+                .setControllerAdvice(new ControllerExceptionHandler()).build();
     }
 
     @Test
@@ -100,22 +100,42 @@ class BookControllerTest {
 
     }
 
+    //we have another URLs that are written below, that are the same in test as Book/new. should write alike
+    // tests for them
+    //,"book/{id}/update","publisher/{id}/book/new"
     @Test
-    void saveOrUpdate() throws Exception {
+    void saveOrUpdateNewBook() throws Exception {
         //given
         BookCommand command = new BookCommand();
         command.setId(1L);
 
         //when
         when(bookService.saveBookCommand(any())).thenReturn(command);
-
-        mockMvc.perform(post("/book").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        //then
+        mockMvc.perform(post("/book/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("id", "")
                         .param("name", "bookName")
-                        .param("page", "100")
+                        .param("pages", "100")
+                        .param("price", "10")
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/book/1/show"));
+    }
+
+    //because of validations, with not defined parameters, we would have errors and fail
+    @Test
+    void saveOrUpdateFail() throws Exception {
+        //given
+        BookCommand command = new BookCommand();
+        command.setId(1L);
+
+        //then
+        mockMvc.perform(post("/book/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", "")
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("book/bookform"));
+
     }
 
     @Test

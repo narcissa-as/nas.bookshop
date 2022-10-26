@@ -12,10 +12,7 @@ import nas.bookshop.service.PublisherService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -60,7 +57,7 @@ public class BookController {
 
     @GetMapping("/book/{id}/show")
     public String showById(@PathVariable String id, Model model) {
-      //    Book newBook = bookService.findById(Long.valueOf(id));
+        //    Book newBook = bookService.findById(Long.valueOf(id));
         model.addAttribute("book", bookService.findById(Long.valueOf(id)));
         return "book/show";
     }
@@ -70,21 +67,31 @@ public class BookController {
         model.addAttribute("book", new BookCommand());
         return BOOK_BOOKFORM_URL;
     }
-
-    @PostMapping("book")
-    String saveOrUpdate(@ModelAttribute("book") BookCommand command) {
+    //2 methods below are the same with different URLs,and no need to be redundant, so I add these URLs in saveOrUpdate-
+    //method
+  /*  @PostMapping("book/new")
+   public String saveOrUpdate(@ModelAttribute("book") BookCommand command) {
 
         BookCommand savedBookCommand = bookService.saveBookCommand(command);
         return "redirect:/book/" + savedBookCommand.getId() + "/show";
     }
 
-    @PostMapping("book/{id}/update")
-    String saveOrUpdate(@Valid Book book, BindingResult result, @ModelAttribute("book") BookCommand command, @PathVariable String id
-    ) {
+    @PostMapping("publisher/{id}/book/new")
+    public String saveBookFromPublisherShowPage(@ModelAttribute() BookCommand command, @PathVariable String id) {
+        bookService.saveBookCommand(command);
+        Long publisherId = Long.valueOf(id);
+        return "redirect:/publisher/" + publisherId + "/show";
 
-        if (result.hasErrors()) {
-            //   result.rejectValue("name","notFound", "not found");
-            return "index";
+    }*/
+
+    @RequestMapping(value = {"book/{id}/update","book/new","publisher/{id}/book/new"} , method = RequestMethod.POST)
+    public String saveOrUpdate(@Valid @ModelAttribute("book") BookCommand command, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+           bindingResult.getAllErrors().forEach(objectError -> {
+               log.debug(objectError.toString());
+           });
+            return BOOK_BOOKFORM_URL;
         }
 
         BookCommand savedBookCommand = bookService.saveBookCommand(command);
@@ -116,14 +123,6 @@ public class BookController {
 
     }
 
-    @PostMapping("publisher/{id}/book/new")
-    public String saveBookFromPublisherShowPage(@ModelAttribute() BookCommand command, @PathVariable String id) {
-        bookService.saveBookCommand(command);
-        Long publisherId = Long.valueOf(id);
-        return "redirect:/publisher/" + publisherId + "/show";
-
-    }
-
     @GetMapping("book/find")
     public String showfindBooks(Model model) {
         BookCommand bookCommand = new BookCommand();
@@ -149,30 +148,5 @@ public class BookController {
         }
         return "book/showfindbooks";
     }
-    //Moving this method as a Controller advice to ControllerExceptionHandler, so could be used among all controllers
-   /* @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound(Exception exception) {
-        log.error("Handling Not Found Exception");
-        log.error(exception.getMessage());
-
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.addObject("exception", exception);
-        modelAndView.setViewName("404error");
-
-        return modelAndView;
-    }*/
-    //Moving this method as a Controller advice to ControllerExceptionHandler, so could be used among all controllers
-   /* @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public ModelAndView handleNumberFormat(Exception exception){
-
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("400error");
-        modelAndView.addObject("exception",exception);
-
-        return modelAndView;
-    }*/
 
 }

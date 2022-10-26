@@ -1,44 +1,45 @@
-<!--this is an input form for getting all properties of a Recipe for creating a new Recipe or updating a Recipe that
- already exist -->
+<!--
+&lt;!&ndash;this is an input form for getting all properties of a Recipe for creating a new Recipe or updating a Recipe that
+ already exist &ndash;&gt;
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!--head part is for using Bootstrap CDN and special CSS that we used in other forms too, indeed it make our form
- style like others,the Body part is different-->
+&lt;!&ndash;head part is for using Bootstrap CDN and special CSS that we used in other forms too, indeed it make our form
+ style like others,the Body part is different&ndash;&gt;
 <head>
     <meta charset="UTF-8"/>
     <title>Recipe Form</title>
 
-    <!-- Latest compiled and minified CSS -->
+    &lt;!&ndash; Latest compiled and minified CSS &ndash;&gt;
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
           th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
 
     <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 
-    <!-- Latest compiled and minified JavaScript -->
+    &lt;!&ndash; Latest compiled and minified JavaScript &ndash;&gt;
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
+&lt;!&ndash;/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/&ndash;&gt;
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <!--here we send an empty RecipeCommand object in HTML file to client side,
+            &lt;!&ndash;here we send an empty RecipeCommand object in HTML file to client side,
              and th:action Specifies where to send the form-data when the form is submitted
              I guess this invokes post controller method of recipe:saveOrUpdate.
-             and the method is post because client side sends the recipe properties -data- to server side-->
-            <!--  <form th:object="${recipe}" th:action="@{/recipe/}" method="post"> -->
-            <!-- after adding update part, changing method part only-->
+             and the method is post because client side sends the recipe properties -data- to server side&ndash;&gt;
+            &lt;!&ndash;  <form th:object="${recipe}" th:action="@{/recipe/}" method="post"> &ndash;&gt;
+            &lt;!&ndash; after adding update part, changing method part only&ndash;&gt;
             <form th:object="${book}" th:action="@{/book/}" method="post">
-                <!--if we have any rejected error in BindingResult, then show a red box in bottom of the page,
-                class belongs to Bootstrap!-->
+                &lt;!&ndash;if we have any rejected error in BindingResult, then show a red box in bottom of the page,
+                class belongs to Bootstrap!&ndash;&gt;
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                     <p>Please Correct Errors Below</p>
                 </div>
-                <!--this is a Generic form for create and update so when we have not Id it's a create type and when
-                 we have Id is an update-->
+                &lt;!&ndash;this is a Generic form for create and update so when we have not Id it's a create type and when
+                 we have Id is an update&ndash;&gt;
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
@@ -47,12 +48,12 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <!--"form-group": needed for optimum spacing-->
+                                &lt;!&ndash;"form-group": needed for optimum spacing&ndash;&gt;
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('description')}
                                 ? 'col-md-3 form-group hasErrors' : 'col-md-3 form-group'">
                                     <label>Book Name:</label>
-                                    <!--showing errors in Bullet style-->
+                                    &lt;!&ndash;showing errors in Bullet style&ndash;&gt;
                                     <input type="text" class="form-control" th:field="*{name}"
                                            th:errorclass="has-error"/>
                                     <span class="help-block"
@@ -66,7 +67,7 @@ ${#fields.errors('name')}" th:text="${err}"/>
                                 </div>
                             </div>
                             <div class="row">
-                                <!--stands for a group:here for categories  -->
+                                &lt;!&ndash;stands for a group:here for categories  &ndash;&gt;
                                 <div class="col-md-3 form-group">
                                     <label>Authors:</label>
                                 </div>
@@ -85,7 +86,7 @@ ${#fields.errors('name')}" th:text="${err}"/>
                                     </div>
                                 </div>
                             </div>
-                            <!--test listing writing method-->
+                            &lt;!&ndash;test listing writing method&ndash;&gt;
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -101,10 +102,10 @@ ${#fields.errors('name')}" th:text="${err}"/>
                                     </div>
                                 </div>
                             </div>
-                            <!--end listing writing method-->
+                            &lt;!&ndash;end listing writing method&ndash;&gt;
                             <div class="row">
-                                <!--I guess it prepare a 3 part division for us: 3 box for 3 properties-->
-                                <!--first part-->
+                                &lt;!&ndash;I guess it prepare a 3 part division for us: 3 box for 3 properties&ndash;&gt;
+                                &lt;!&ndash;first part&ndash;&gt;
                                 <div class="col-md-3 form-group" th:class="${#fields.hasErrors('name')}
                                 ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
                                     <label>FORMAT:</label>
@@ -116,7 +117,7 @@ ${#fields.errors('name')}" th:text="${err}"/>
                                         </ul>
                                     </span>
                                 </div>
-                                <!--second part-->
+                                &lt;!&ndash;second part&ndash;&gt;
                                 <div class="col-md-3 form-group" th:class="${#fields.hasErrors('available')}
                                 ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
                                     <label>AVAILABLE:</label>
@@ -221,4 +222,4 @@ ${#fields.errors('name')}" th:text="${err}"/>
     </div>
 </div>
 </body>
-</html>
+</html>-->
