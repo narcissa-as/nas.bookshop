@@ -36,11 +36,11 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-offset-6">
+                <div class="col-md-offset-6">
                         <a class="btn btn-primary" href="#" th:href="@{'/book/find'}">Find Books</a>
+
+                        <a class="btn btn-primary" href="#" th:href="@{'/publishers/show'}">Publishers</a>
                     </div>
-                </div>
 
                 <div class="panel-body"> <!--panel body-->
                     <div class="table-responsive" th:if="${not #lists.isEmpty(books)}"><!--thymeleaf at the end part-->
@@ -54,7 +54,7 @@
                                 <th>Description</th>
                                 <th>EAN/UPC</th>
                                 <th>Available</th>
-                            </thead>
+                            <!--</thead>-->
                             </tr>
                             </thead>
                             <tr th:each="book : ${books}">
