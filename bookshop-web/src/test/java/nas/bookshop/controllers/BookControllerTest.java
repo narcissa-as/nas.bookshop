@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.*;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -184,6 +185,31 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("books"))
                 .andExpect(view().name("book/showfindbooks"));
+
+    }
+
+    //check for situation that empty value entered and because of like search we get findAll response
+    @Test
+    void findBooksEmptyValueReturnMany() throws Exception {
+        //given
+        List<Book> books = new ArrayList<>();
+
+        Book testBook1 = new Book();
+        books.add(testBook1);
+
+        Book tesBook2 = new Book();
+        books.add(testBook2);
+
+        //when
+        when(bookService.findAllByNameLike(anyString())).thenReturn(books);
+
+        //then
+        mockMvc.perform(post("/book/find").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("name","")
+                )
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("books"))
+                .andExpect(model().attribute("books", hasSize(2)));
 
     }
 
