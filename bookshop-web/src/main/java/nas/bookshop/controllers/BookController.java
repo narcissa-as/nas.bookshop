@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller
@@ -84,13 +85,13 @@ public class BookController {
 
     }*/
 
-    @RequestMapping(value = {"book/{id}/update","book/new","publisher/{id}/book/new"} , method = RequestMethod.POST)
+    @RequestMapping(value = {"book/{id}/update", "book/new", "publisher/{id}/book/new"}, method = RequestMethod.POST)
     public String saveOrUpdate(@Valid @ModelAttribute("book") BookCommand command, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-           bindingResult.getAllErrors().forEach(objectError -> {
-               log.debug(objectError.toString());
-           });
+            bindingResult.getAllErrors().forEach(objectError -> {
+                log.debug(objectError.toString());
+            });
             return BOOK_BOOKFORM_URL;
         }
 
@@ -132,8 +133,8 @@ public class BookController {
 
     @PostMapping("book/find")
     // @GetMapping()
-    public String findBooks(Book book, BindingResult result, Model model) {
-        //model.addAttribute(bookName)
+    public String findBooks(@Valid Book book, BindingResult result, Model model) {
+        // empty string signifies broadest possible search
         if (book.getName() == null) {
             book.setName("");
         }
@@ -147,6 +148,13 @@ public class BookController {
             model.addAttribute("books", results);
         }
         return "book/showfindbooks";
+    }
+
+    //gives us a javascript/xml output of our objects
+    @GetMapping("api/books")
+    @ResponseBody
+    Set<Book> any() {
+        return bookService.findAll();
     }
 
 }
